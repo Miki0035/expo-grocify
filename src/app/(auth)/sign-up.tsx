@@ -1,10 +1,11 @@
-import { useAuth, useSignUp } from "@clerk/expo";
-import { Image } from "expo-image";
-import { Link } from "expo-router";
+import { useSignUp } from "@clerk/expo";
+import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-export default function MainScreen() {
-  const { isLoaded, isSignedIn } = useAuth();
+import { Button, StyleSheet, TextInput, View } from "react-native";
+
+const SignUp = () => {
+  const router = useRouter();
+
   const { signUp } = useSignUp();
 
   const [emailAddress, setEmailAddress] = useState("");
@@ -15,8 +16,7 @@ export default function MainScreen() {
   const handleSignUp = async () => {
     const { error } = await signUp.password({ emailAddress, password });
     if (error) {
-      // Handle the error in your app.
-      // See https://clerk.com/docs/guides/development/custom-flows/error-handling
+      console.error(JSON.stringify(error, null, 2));
       return;
     }
 
@@ -41,18 +41,6 @@ export default function MainScreen() {
       // Handle the error in your app.
     }
   };
-
-  if (!isLoaded) {
-    return null;
-  }
-
-  if (isSignedIn) {
-    return (
-      <View style={styles.container}>
-        <Text>You're signed in</Text>
-      </View>
-    );
-  }
 
   if (isVerifying) {
     return (
@@ -91,19 +79,11 @@ export default function MainScreen() {
       Clerk skips the browser CAPTCHA on iOS and Android.
       See https://clerk.com/docs/guides/secure/legacy-bot-protection */}
       <View nativeID="clerk-captcha" />
-      <Link href={`/about`} className="text-red-700 text-4xl">
-        Go to about
-      </Link>
-      <Image
-        source={"https://reactnative.dev/img/tiny_logo.png"}
-        style={{
-          width: 200,
-          height: 200,
-        }}
-      />
     </View>
   );
-}
+};
+
+export default SignUp;
 
 const styles = StyleSheet.create({
   container: {
