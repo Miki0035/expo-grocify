@@ -91,7 +91,9 @@ export default function MainScreen() {
       Clerk skips the browser CAPTCHA on iOS and Android.
       See https://clerk.com/docs/guides/secure/legacy-bot-protection */}
       <View nativeID="clerk-captcha" />
-      <Link href={"/about"}>Go to about</Link>
+      <Link href={`/about`} className="text-red-700 text-4xl">
+        Go to about
+      </Link>
       <Image
         source={"https://reactnative.dev/img/tiny_logo.png"}
         style={{
